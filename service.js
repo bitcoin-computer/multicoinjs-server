@@ -6,8 +6,11 @@ let leveldown = require('leveldown')
 let rpc = require('./rpc')
 let zmq = require('zeromq')
 
-debug(`Opening leveldb @ ${process.env.INDEXDB}`)
-let db = leveldown(process.env.INDEXDB)
+const INDEXDB = require('./config').INDEXDB
+const ZMQ = require('./config').ZMQ
+
+debug(`Opening leveldb @ ${INDEXDB}`)
+let db = leveldown(INDEXDB)
 let indexd = new Indexd(db, rpc)
 
 module.exports = function initialize (callback) {
@@ -15,15 +18,15 @@ module.exports = function initialize (callback) {
     if (err) debug(err)
   }
 
-  debug(`Opening leveldb @ ${process.env.INDEXDB}`)
+  debug(`Opening leveldb @ ${INDEXDB}`)
   db.open({
     writeBufferSize: 1 * 1024 * 1024 * 1024 // 1 GiB
   }, (err) => {
     if (err) return callback(err)
-    debug(`Opened leveldb @ ${process.env.INDEXDB}`)
+    debug(`Opened leveldb @ ${INDEXDB}`)
 
     let zmqSock = zmq.socket('sub')
-    zmqSock.connect(process.env.ZMQ || 'tcp://localhost:28332')
+    zmqSock.connect(ZMQ)
     zmqSock.subscribe('hashblock')
     zmqSock.subscribe('hashtx')
 

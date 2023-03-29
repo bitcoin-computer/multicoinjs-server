@@ -4,7 +4,9 @@ let Indexd = require('indexd')
 let rpc = require('../rpc')
 let { types: scriptTypes } = require('indexd/indexes/script')
 
-let db = leveldown(process.env.INDEXDB)
+const INDEXDB = require('./config').INDEXDB
+
+let db = leveldown(INDEXDB)
 let indexd = new Indexd(db, rpc)
 
 function debug () {

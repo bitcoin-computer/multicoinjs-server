@@ -1,6 +1,7 @@
 const debug = require('debug')
 const debugWare = require('debug-ware')
 const cors = require('cors')
+const PORT = require('./config').PORT
 require('dotenv').config();
 
 require('easy-express-api')({
@@ -16,5 +17,5 @@ require('easy-express-api')({
   ]
 }, (err, server) => {
   if (err) throw err
-  server.listen(process.env.PORT)
+  server.listen(PORT)
 })

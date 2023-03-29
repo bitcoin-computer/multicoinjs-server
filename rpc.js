@@ -1,7 +1,13 @@
+const RPC_URL = require('./config').RPC_URL
+const RPC_USER = require('./config').RPC_USER
+const RPC_PASS = require('./config').RPC_PASS
+const RPC_BATCHSIZE = require('./config').RPC_BATCHSIZE
+const RPC_CONCURRENT = require('./config').RPC_CONCURRENT
+
 module.exports = require('yajrpc/qup')({
-  url: process.env.RPC_URL || 'http://localhost:19332',
-  user: process.env.RPC_USER || 'bcn-admin',
-  pass: process.env.RPC_PASS || 'kH4nU5Okm6-uyC0_mA5ztVNacJqZbYd_KGLl6mx722A=',
-  batch: process.env.RPCBATCHSIZE || 500,
-  concurrent: process.env.RPCCONCURRENT || 16
+  url: RPC_URL,
+  user: RPC_USER,
+  pass: RPC_PASS,
+  batch: RPC_BATCHSIZE,
+  concurrent: RPC_CONCURRENT
 })

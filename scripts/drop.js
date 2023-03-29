@@ -3,12 +3,14 @@ let Indexd = require('indexd')
 let rpc = require('../rpc')
 let { types: txoTypes } = require('indexd/indexes/txo')
 
+const INDEXDB = require('./config').INDEXDB
+
 function debug () {
   if (arguments[0] instanceof Error) console.error.apply(null, arguments)
   else console.log.apply(null, arguments)
 }
 
-let db = leveldown(process.env.INDEXDB)
+let db = leveldown(INDEXDB)
 let indexd = new Indexd(db, rpc)
 
 db.open({}, (err) => {
