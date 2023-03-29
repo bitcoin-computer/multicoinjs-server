@@ -6,8 +6,7 @@ let leveldown = require('leveldown')
 let rpc = require('./rpc')
 let zmq = require('zeromq')
 
-const INDEXDB = require('./config').INDEXDB
-const ZMQ = require('./config').ZMQ
+const { INDEXDB, ZMQ } = require('./config')
 
 debug(`Opening leveldb @ ${INDEXDB}`)
 let db = leveldown(INDEXDB)
