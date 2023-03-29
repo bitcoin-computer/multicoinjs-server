@@ -14,6 +14,14 @@ with the addition of support for other UTXOs based blockchains. Currently suppor
 
 Configure your .env file to setup the credentials. You can use the .env.example file as a template.
 
+# Setup wallet (litecoin)
+Run `litecoin-cli createwallet "wallet_name"` to create a wallet.
+Run `litecoin-cli getnewaddress "" "legacy"` to get a new address.
+Run `litecoin-cli generatetoaddress 431 $ADDRESS` to generate 431 blocks.
+Run `litecoin-cli getnewaddress "mweb" "mweb"` to get a new mweb address.
+Run `litecoin-cli sendtoaddress $MWEBADDRESS 1` to send 1 LTC to the mweb address (mweb activation).
+Run `litecoin-cli generatetoaddress 1 $ADDRESS` to generate 1 block on top of the mweb activation.
+
 # Install 
 Run `yarn install` to install the dependencies.
 
