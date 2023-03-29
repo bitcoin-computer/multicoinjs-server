@@ -1,6 +1,7 @@
 const debug = require('debug')
 const debugWare = require('debug-ware')
 const cors = require('cors')
+require('dotenv').config();
 
 require('easy-express-api')({
   middleware: [
