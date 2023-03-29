@@ -12,6 +12,7 @@ let DBLIMIT = 440 // max sequential leveldb walk
 let NETWORK = bitcoin.networks.regtest
 
 const CHAIN = require('../config').CHAIN
+const KEYDB = require('../config').KEYDB
 const feePerByte = CHAIN === 'LTC' ? 10000 : 1
 
 let sleep = ms => new Promise(r => setTimeout(r, ms))
@@ -288,7 +289,7 @@ module.exports = function (router, callback) {
     }
   })
 
-  fs.readFile('auth.txt', (err, buffer) => {
+  fs.readFile(KEYDB, (err, buffer) => {
     if (err) return callback(err)
 
     buffer

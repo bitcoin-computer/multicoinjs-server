@@ -1,8 +1,4 @@
-const RPC_URL = require('./config').RPC_URL
-const RPC_USER = require('./config').RPC_USER
-const RPC_PASS = require('./config').RPC_PASS
-const RPC_BATCHSIZE = require('./config').RPC_BATCHSIZE
-const RPC_CONCURRENT = require('./config').RPC_CONCURRENT
+const { RPC_URL, RPC_USER, RPC_PASS, RPC_BATCHSIZE, RPC_CONCURRENT } = require('./config')
 
 module.exports = require('yajrpc/qup')({
   url: RPC_URL,
