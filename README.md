@@ -26,6 +26,8 @@ Run `litecoin-cli generatetoaddress 1 $ADDRESS` to generate 1 block on top of th
 Run `yarn install` to install the dependencies.
 
 # Start
-Run `yar start` to start the server.
+Run `yarn start` to start the server.
+
 # Start through Docker
 Move to the docker folder and follow the instructions on the README.md file.
+
