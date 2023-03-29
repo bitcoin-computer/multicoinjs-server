@@ -9,6 +9,7 @@ const RPC_CONCURRENT = process.env.RPC_CONCURRENT || 16
 const INDEXDB = process.env.INDEXDB || './indexd.leveldb'
 const ZMQ = process.env.ZMQ || 'tcp://localhost:28332'
 const PORT = process.env.PORT || 5001
+const KEYDB = process.env.KEYDB || './auth.txt'
 
 module.exports = {
   CHAIN,
@@ -20,5 +21,6 @@ module.exports = {
   RPC_CONCURRENT,
   INDEXDB,
   ZMQ,
-  PORT
+  PORT,
+  KEYDB
 }
