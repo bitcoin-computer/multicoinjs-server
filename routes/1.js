@@ -11,6 +11,9 @@ let isHex64 = typeforce.HexN(64)
 let DBLIMIT = 440 // max sequential leveldb walk
 let NETWORK = bitcoin.networks.regtest
 
+const CHAIN = require('../config').CHAIN
+const feePerByte = CHAIN === 'LTC' ? 10000 : 1
+
 let sleep = ms => new Promise(r => setTimeout(r, ms))
 
 let pRpc = (cmd, args) => new Promise((resolve, reject) => {
@@ -65,6 +68,15 @@ module.exports = function (router, callback) {
     } catch (e) { return res.easy(400) }
     next()
   }
+
+  // Defines health
+  router.get('/', (req, res) => {
+    res.easy(null, 'regtest')
+  })
+
+  router.get('/chain', (req, res) => {
+    res.easy(null, CHAIN || 'BTC')
+  })
 
   router.get('/a/:address/firstseen', addressWare, (req, res) => {
     let { scId } = req.params
@@ -242,7 +254,7 @@ module.exports = function (router, callback) {
   })
 
   router.post('/r/faucet', authMiddleware, (req, res) => {
-    rpc('sendtoaddress', [req.query.address, parseInt(req.query.value) / 1e8, '', '', false, false, null, 'unset', false, 1], res.easy)
+    rpc('sendtoaddress', [req.query.address, parseInt(req.query.value) / 1e8, '', '', false, false, null, 'unset', false, feePerByte], res.easy)
   })
 
   router.post('/r/faucetScript', authMiddleware, async (req, res) => {
@@ -252,7 +264,7 @@ module.exports = function (router, callback) {
       const address = payment.address
       const scId = bitcoin.crypto.sha256(payment.output).toString('hex')
 
-      const txId = await pRpc('sendtoaddress', [address, parseInt(req.query.value) * 2 / 1e8, '', '', false, false, null, 'unset', false, 1])
+      const txId = await pRpc('sendtoaddress', [address, parseInt(req.query.value) * 2 / 1e8, '', '', false, false, null, 'unset', false, feePerByte])
       let unspent
       let counter = 10
       while (!unspent) {
@@ -276,7 +288,7 @@ module.exports = function (router, callback) {
     }
   })
 
-  fs.readFile(process.env.KEYDB, (err, buffer) => {
+  fs.readFile('auth.txt', (err, buffer) => {
     if (err) return callback(err)
 
     buffer
