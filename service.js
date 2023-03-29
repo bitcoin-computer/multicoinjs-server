@@ -6,6 +6,7 @@ let leveldown = require('leveldown')
 let rpc = require('./rpc')
 let zmq = require('zeromq')
 
+debug(`Opening leveldb @ ${process.env.INDEXDB}`)
 let db = leveldown(process.env.INDEXDB)
 let indexd = new Indexd(db, rpc)
 
@@ -22,7 +23,7 @@ module.exports = function initialize (callback) {
     debug(`Opened leveldb @ ${process.env.INDEXDB}`)
 
     let zmqSock = zmq.socket('sub')
-    zmqSock.connect(process.env.ZMQ)
+    zmqSock.connect(process.env.ZMQ || 'tcp://localhost:28332')
     zmqSock.subscribe('hashblock')
     zmqSock.subscribe('hashtx')
 
