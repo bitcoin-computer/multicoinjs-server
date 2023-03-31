@@ -1,4 +1,4 @@
-let bitcoin = require('bitcoinjs-lib')
+let bitcoin = require('@bitcoin-computer/multicoinjs-lib')
 let leveldown = require('leveldown')
 let Indexd = require('indexd')
 let rpc = require('../rpc')

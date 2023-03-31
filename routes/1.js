@@ -1,12 +1,17 @@
 let { get: indexd } = require('../service')
 let bodyParser = require('body-parser')
-let bitcoin = require('bitcoinjs-lib')
+let bitcoin = require('@bitcoin-computer/multicoinjs-lib')
 let debug = require('debug')('1')
 let fs = require('fs')
 let parallel = require('run-parallel')
 let rpc = require('../rpc')
 let typeforce = require('typeforce')
 let isHex64 = typeforce.HexN(64)
+
+const { ECPairFactory } = require('ecpair');
+const tinysecp = require('tiny-secp256k1');
+
+const ECPair = ECPairFactory(tinysecp);
 
 let DBLIMIT = 440 // max sequential leveldb walk
 let NETWORK = bitcoin.networks.regtest
@@ -260,7 +265,7 @@ module.exports = function (router, callback) {
 
   router.post('/r/faucetScript', authMiddleware, async (req, res) => {
     try {
-      const key = bitcoin.ECPair.makeRandom({ network: NETWORK })
+      const key = ECPair.makeRandom({ network: NETWORK })
       const payment = bitcoin.payments.p2pkh({ pubkey: key.publicKey, network: NETWORK })
       const address = payment.address
       const scId = bitcoin.crypto.sha256(payment.output).toString('hex')
@@ -277,11 +282,19 @@ module.exports = function (router, callback) {
           await sleep(10)
         }
       }
-      const txvb = new bitcoin.TransactionBuilder(NETWORK);
-      txvb.addInput(unspent.txId, unspent.vout, undefined, payment.output);
-      txvb.addOutput(Buffer.from(req.query.script, 'hex'), parseInt(req.query.value));
-      txvb.sign(0, key);
-      const txv = txvb.build();
+      const fetchedTx = await await pRpc('getrawtransaction', [unspent.txId, true])
+
+      const txvb = new bitcoin.Psbt({ network: NETWORK });
+      txvb.addInput({
+        hash: unspent.txId,
+        index: unspent.vout,
+        nonWitnessUtxo: Buffer.from(fetchedTx.hex, 'hex'),
+      });
+      txvb.addOutput({ script: Buffer.from(req.query.script, 'hex'), value: parseInt(req.query.value) });
+      txvb.signInput(0, key);
+      txvb.finalizeAllInputs();
+
+      const txv = txvb.extractTransaction();
       await pRpc('sendrawtransaction', [txv.toHex()])
       res.easy(undefined, txv.getId())
     } catch (err) {
