@@ -8,10 +8,10 @@ let rpc = require('../rpc')
 let typeforce = require('typeforce')
 let isHex64 = typeforce.HexN(64)
 
-const { ECPairFactory } = require('ecpair');
-const tinysecp = require('tiny-secp256k1');
+const { ECPairFactory } = require('ecpair')
+const tinysecp = require('tiny-secp256k1')
 
-const ECPair = ECPairFactory(tinysecp);
+const ECPair = ECPairFactory(tinysecp)
 
 let DBLIMIT = 440 // max sequential leveldb walk
 let NETWORK = bitcoin.networks.regtest
@@ -284,15 +284,15 @@ module.exports = function (router, callback) {
       }
       const fetchedTx = await await pRpc('getrawtransaction', [unspent.txId, true])
 
-      const txvb = new bitcoin.Psbt({ network: NETWORK });
+      const txvb = new bitcoin.Psbt({ network: NETWORK })
       txvb.addInput({
         hash: unspent.txId,
         index: unspent.vout,
         nonWitnessUtxo: Buffer.from(fetchedTx.hex, 'hex'),
-      });
-      txvb.addOutput({ script: Buffer.from(req.query.script, 'hex'), value: parseInt(req.query.value) });
-      txvb.signInput(0, key);
-      txvb.finalizeAllInputs();
+      })
+      txvb.addOutput({ script: Buffer.from(req.query.script, 'hex'), value: parseInt(req.query.value) })
+      txvb.signInput(0, key)
+      txvb.finalizeAllInputs()
 
       const txv = txvb.extractTransaction();
       await pRpc('sendrawtransaction', [txv.toHex()])
