@@ -1,5 +1,5 @@
 {
-  "name": "@bitcoin-computer/multicoinjs-server",
+  "name": "@bitcoin-computer/nakamotojs-server",
   "version": "1.0.1",
   "description": "",
   "private": true,
@@ -10,16 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitcoin-computer/multicoinjs-server.git"
+    "url": "git+https://github.com/bitcoin-computer/nakamotojs-server.git"
   },
   "author": "",
   "license": "BSD3",
   "bugs": {
-    "url": "https://github.com/bitcoin-computer/multicoinjs-server/issues"
+    "url": "https://github.com/bitcoin-computer/nakamotojs-server/issues"
   },
-  "homepage": "https://github.com/bitcoin-computer/multicoinjs-server#readme",
+  "homepage": "https://github.com/bitcoin-computer/nakamotojs-server#readme",
   "dependencies": {
-    "@bitcoin-computer/multicoinjs-lib": "6.1.0",
+    "@bitcoin-computer/nakamotojs-lib": "^6.1.2",
     "cors": "^2.8.5",
     "debug": "^4.1.0",
     "debug-ware": "^1.2.10",
