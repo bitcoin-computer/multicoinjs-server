@@ -1,6 +1,6 @@
 let { get: indexd } = require('../service')
 let bodyParser = require('body-parser')
-let bitcoin = require('@bitcoin-computer/multicoinjs-lib')
+let bitcoin = require('@bitcoin-computer/nakamotojs-lib')
 let debug = require('debug')('1')
 let fs = require('fs')
 let parallel = require('run-parallel')
@@ -18,7 +18,7 @@ let NETWORK = bitcoin.networks.regtest
 
 const CHAIN = require('../config').CHAIN
 const KEYDB = require('../config').KEYDB
-const feePerByte = CHAIN === 'LTC' ? 10000 : 1
+const feePerByte = CHAIN === 'LTC' ? 20000 : 1
 
 let sleep = ms => new Promise(r => setTimeout(r, ms))
 
